@@ -80,7 +80,10 @@
   <div id="message"></div>
   
   <!-- Add audio elements for the music -->
+
+  <!--
   <audio id="blackoutMusic" src="blackout-music.mp3"></audio>
+  -->
   <audio id="finalMusic" src="final-music.mp3"></audio>
 
   <script>
@@ -88,7 +91,7 @@
     const message = document.getElementById('message');
     const fadeOverlay = document.getElementById('fade');
     const finalMessageContainer = document.getElementById('finalMessage');
-    const blackoutMusic = document.getElementById('blackoutMusic');
+    //const blackoutMusic = document.getElementById('blackoutMusic');
     const finalMusic = document.getElementById('finalMusic');
     let chaseButton = null;
     let clickCount = 0;
@@ -146,9 +149,9 @@
       setTimeout(() => {
         fadeOverlay.classList.add("active"); // Screen goes black
         fadeOverlay.style.opacity = "1";
-        blackoutMusic.play(); // Play blackout music
+        //blackoutMusic.play(); // Play blackout music
         setTimeout(() => {
-          blackoutMusic.pause();
+          //blackoutMusic.pause();
           fadeOverlay.style.opacity = "0"; // Screen fades back to white
           fadeOverlay.classList.remove("active");
           document.body.style.backgroundColor = "#ffffff";
