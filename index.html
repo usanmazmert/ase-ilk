@@ -78,21 +78,27 @@
   <div id="finalMessage"></div>
   <button id="startButton">Başla</button>
   <div id="message"></div>
+  
+  <!-- Add audio elements for the music -->
+  <audio id="blackoutMusic" src="blackout-music.mp3"></audio>
+  <audio id="finalMusic" src="final-music.mp3"></audio>
 
   <script>
     const startButton = document.getElementById('startButton');
     const message = document.getElementById('message');
     const fadeOverlay = document.getElementById('fade');
     const finalMessageContainer = document.getElementById('finalMessage');
+    const blackoutMusic = document.getElementById('blackoutMusic');
+    const finalMusic = document.getElementById('finalMusic');
     let chaseButton = null;
     let clickCount = 0;
     const chaseSentences = ["Hahaha!", "Güzel deneme!", "Beni yakalayamazsın!", "Az kaldı!", "Bir dahakine!"];
     const finalSentences = [
-      "Sen gerçekten harikasın.",
-      "Her zaman beni güldürüyorsun.",
-      "Kalbini yakaladığım için çok mutluyum.",
-      "Ve şimdi söylemek istiyorum ki...",
-      "Seni çok seviyorum, aşkım."
+      "Sana söylemek istediğim bir şey var...",
+      "Ben eskiden dört duvar arasında çürüyüp giden bir gençken.",
+      "Hep aşk filmlerine özenir ve bir gün onu bulacağımı umardım.",
+      "Ta ki seni tanıyana kadar.",
+      "İyi ki hayatımdasın sevgilim, seni çok seven aşkın\nMert..."
     ];
 
     // Start button click event
@@ -140,11 +146,14 @@
       setTimeout(() => {
         fadeOverlay.classList.add("active"); // Screen goes black
         fadeOverlay.style.opacity = "1";
+        blackoutMusic.play(); // Play blackout music
         setTimeout(() => {
+          blackoutMusic.pause();
           fadeOverlay.style.opacity = "0"; // Screen fades back to white
           fadeOverlay.classList.remove("active");
           document.body.style.backgroundColor = "#ffffff";
           clearMessage();
+          finalMusic.play(); // Play final music
           showFinalSentences();
         }, 3000);
       }, 500);
