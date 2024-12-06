@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surprise for You</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #fce4ec;
+      overflow: hidden;
+    }
+    #startButton, #chaseButton {
+      padding: 15px 30px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      background-color: #ff4081;
+      color: white;
+      border-radius: 8px;
+      transition: transform 0.3s;
+    }
+    #chaseButton {
+      position: absolute;
+    }
+    #startButton:hover, #chaseButton:hover {
+      transform: scale(1.1);
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 24px;
+      color: #880e4f;
+    }
+    #fade {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 3s, z-index 0s 3s;
+    }
+    #fade.active {
+      z-index: 10;
+    }
+    #finalMessage {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+      color: #880e4f;
+      font-size: 24px;
+    }
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="fade"></div>
+  <div id="finalMessage"></div>
+  <button id="startButton">Başla</button>
+  <div id="message"></div>
+
+  <script>
+    const startButton = document.getElementById('startButton');
+    const message = document.getElementById('message');
+    const fadeOverlay = document.getElementById('fade');
+    const finalMessageContainer = document.getElementById('finalMessage');
+    let chaseButton = null;
+    let clickCount = 0;
+    const chaseSentences = ["Hahaha!", "Güzel deneme!", "Beni yakalayamazsın!", "Az kaldı!", "Bir dahakine!"];
+    const finalSentences = [
+      "Sen gerçekten harikasın.",
+      "Her zaman beni güldürüyorsun.",
+      "Kalbini yakaladığım için çok mutluyum.",
+      "Ve şimdi söylemek istiyorum ki...",
+      "Seni çok seviyorum, aşkım."
+    ];
+
+    // Start button click event
+    startButton.addEventListener('click', () => {
+      startButton.style.display = 'none';
+      startChaseGame();
+    });
+
+    // Function to start the chase game
+    function startChaseGame() {
+      message.textContent = "Yakala bakalım!";
+      createChaseButton();
+    }
+
+    // Function to create and handle the chase button
+    function createChaseButton() {
+      chaseButton = document.createElement('button');
+      chaseButton.id = 'chaseButton';
+      chaseButton.textContent = "Yakala beni!";
+      document.body.appendChild(chaseButton);
+      moveChaseButton();
+
+      chaseButton.addEventListener('click', () => {
+        if (clickCount < 4) {
+          message.textContent = chaseSentences[clickCount];
+          moveChaseButton();
+        } else {
+          message.textContent = "Hayıııır!";
+          startFinalSequence();
+        }
+        clickCount++;
+      });
+    }
+
+    // Function to randomly position the chase button
+    function moveChaseButton() {
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 50);
+      chaseButton.style.left = `${x}px`;
+      chaseButton.style.top = `${y}px`;
+    }
+
+    // Function to start the final sequence
+    function startFinalSequence() {
+      setTimeout(() => {
+        fadeOverlay.classList.add("active"); // Screen goes black
+        fadeOverlay.style.opacity = "1";
+        setTimeout(() => {
+          fadeOverlay.style.opacity = "0"; // Screen fades back to white
+          fadeOverlay.classList.remove("active");
+          document.body.style.backgroundColor = "#ffffff";
+          clearMessage();
+          showFinalSentences();
+        }, 3000);
+      }, 500);
+
+      setTimeout(() => {
+        chaseButton.remove();
+      }, 500);
+    }
+
+    // Function to clear the "Hayıııır!" message
+    function clearMessage() {
+      message.textContent = "";
+    }
+
+    // Function to show final sentences
+    function showFinalSentences() {
+      finalMessageContainer.style.display = "flex";
+      finalSentences.forEach((sentence, index) => {
+        const p = document.createElement('p');
+        p.textContent = sentence;
+        p.classList.add('fade-in');
+        p.style.animationDelay = `${index * 2}s`; // Staggered appearance
+        finalMessageContainer.appendChild(p);
+      });
+    }
+  </script>
+</body>
+</html>
